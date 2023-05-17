@@ -25,7 +25,7 @@ fun ItemView(factura: Factura) {
     val formatoFechaEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
     val formatoFechaSalida = SimpleDateFormat("dd MMM yyyy", Locale.forLanguageTag("es"))
     val cambioFecha = factura.fecha
-    val fechaFactura: Date = formatoFechaEntrada.parse(cambioFecha)
+    val fechaFactura: Date = formatoFechaEntrada.parse(cambioFecha) as Date
     val fechaFormateada: String = formatoFechaSalida.format(fechaFactura)
 
     Card(

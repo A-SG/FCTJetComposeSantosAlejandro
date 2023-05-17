@@ -1,6 +1,5 @@
 package com.example.jetcomposesantosalejandro
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val facturasViewModel by viewModels<FacturasViewModel>()
+    private val facturasViewModel by viewModels<FacturasViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,16 +39,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
+/*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ContenedorVista() {
-    Scaffold(
-        topBar = { Toolbar() },
-        content = { App()}
-    )
-}
+    Scaffold(topBar = { Toolbar() })
+}*/
 
 @Preview
 @Composable
@@ -90,10 +85,7 @@ fun Toolbar() {
     )
 }
 
-@Preview
-@Composable
-fun App(){
-}
+
 
 @Composable
 fun ListaFactura(listaFacturas: List<Factura>){
