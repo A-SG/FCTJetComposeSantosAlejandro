@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">Practica1_SantosAlejandro</string>
+
+    <!--Recursos vista main activity-->
+    <string name="activityMain.toolbar.tvConsumo">&lt; Consumo</string>
+    <string name="activityMain.toolbar.tvFacturas">Facturas</string>
+    <string name="activityMain.toolbar.btnActivarRetromock">Retromock</string>
+
+    <!--Recursos vista second activity-->
+    <string name="activitySecond.toolbar.titulo">Filtrar Facturas</string>
+    <string name="activitySecond.cardViewFiltroFecha.titulo">Con fecha de admisión</string>
+    <string name="activitySecond.cardViewFiltroFecha.tvFechainicio">Desde:</string>
+    <string name="activitySecond.cardViewFiltroFecha.tvFechaFin">Hasta:</string>
+    <string name="activitySecond.cardviewFiltroFecha.textoBtnFechaInicio">dia/mes/año</string>
+    <string name="activitySecond.cardviewFiltroFecha.textBtnFechaFin">dia/mes/año</string>
+    <string name="activitySecond.cardviewFiltroImporte.titulo">Por un importe </string>
+    <string name="activitySecond.cardviewFiltroImporte.tvImporteMinimo">0</string>
+    <string name="activitySecond.cardviewFiltroEstado.cbestado">Por estado</string>
+    <string name="activitySecond.cardviewFiltroEstado.cbpagadas">Pagada</string>
+    <string name="activitySecond.cardviewFiltroEstado.cbanuladas">Anuladas</string>
+    <string name="activitySecond.cardviewFiltroEstado.cbcuotafija">Cuota Fija</string>
+    <string name="activitySecond.cardviewFiltroEstado.cbpendientesPago">Pendiente de pago</string>
+    <string name="activitySecond.cardviewFiltroEstado.cbplanDePago">Plan de pago</string>
+    <string name="activitySecond.btnAplicarFiltro">Aplicar filtros</string>
+    <string name="activitySecond.btnBorrarFiltro">Borrar filtros</string>
+
+
+    <!--Recursos vista item del recyclerview-->
+    <string name="itemFacturas.simboloMoneda"> %1$s €</string>
+
+
+    <!--Recursos vista item del recyclerview-->
+    <string name="itemFactura.tvInformacion">Información</string>
+    <string name="itemFactura.tvfunciónNoDisponible">Esta funcionalidad aún no está disponible</string>
+    <string name="itemFactura.btnCerrar">Cerrar</string>
+
+
+    <!--Recursos vista principal selección entre prácticas 1 y 2-->
+    <string name="pantallaInicio.tvTitulo">Prácticas Android</string>
+    <string name="pantallaInicio.cardviewPractica1.tvTitulo">Práctica 1</string>
+    <string name="pantallaInicio.cardviewPractica2.tvTitulo">Práctica 2</string>
+
+
+    <!--Recursos vista pantallaPrincipalSmartSolar-->
+    <string name="pantallaPrincipalSmartsolar.toolbar.titulo">Smart Solar</string>
+    <string name="pantallaPrincipalSmartsolar.toolbar.textoBoton">&lt; Atrás</string>
+    <string name="pantallaPrincipalSmartsolar.tablelayout.TabItem1">Mi Instalación</string>
+    <string name="pantallaPrincipalSmartsolar.tablelayout.TabItem2">Energía</string>
+    <string name="pantallaPrincipalSmartsolar.tablelayout.TabItem3">Detalles</string>
+
+
+    <!--Primer Fragment: Mi Instalación-->
+    <string name="fragment.MiInstalacion.InformacionFactura">Aquí tienes los datos de tu instalación fotovoltaica en tiempo real</string>
+    <string name="fragment.MiInstalacion.PorcentajeAutocosumo">Autoconsumo: 92%</string>
+
+
+    <!--Segundo Frangmet:Energia -->
+    <string name="fragment.Energia.Informacion">Estamos trabajando en mejorar la App. Tus paneles solares siguen produciendo, en breve podrás segir viendo tu producción solar. Sentimos las molestias.</string>
+
+
+    <!--Tercer Fragment:Detalle-->
+    <string name="fragment.Detalle.tvCodigoAutoconsumo">CAU(Código Autoconsumo)</string>
+    <string name="fragment.Detalle.tvEstadoSolicitudAlta">Estado solicitud alta autoconsumidor</string>
+    <string name="fragment.Detalle.tvTipoAutoconsumo">Tipo autoconsumo</string>
+    <string name="fragment.Detalle.tvCompensaciónExedentes">Compensación de exedentes</string>
+    <string name="fragment.Detalle.tvPotenciaInstalación">Potencia de instalación</string>
+
+
+    <!--Recursos para la vista principal SmartSolar-->
+    <string name="pantallaPrincipalSmartSolar.nombretab1">Mi Instalación</string>
+    <string name="pantallaPrincipalSmartSolar.nombretab2">Energía</string>
+    <string name="pantallaPrincipalSmartSolar.nombretab3">Detalle</string>
+
+
+    <!--Recursospara la la vista pop-up perteneciente al fragmento detalle-->
+    <string name="popup_fragmentodetalle.titulopopup">Estado solicitud autoconsumo</string>
+    <string name="popup_fragmentodetalle.cuerpopopup">El tiempo estimado de activación de tu autoconsumo es de 1 a 2 meses, éste variará en función de tu comunidad autónoma y distibuidora</string>
+    <string name="popup_fragmentodetalle.textoboton">Aceptar</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="title_activity_item_view">ItemView</string>
+
+</resources>
