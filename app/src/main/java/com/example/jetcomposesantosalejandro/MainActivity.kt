@@ -16,8 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.jetcomposesantosalejandro.data.network.domain.model.Factura
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,9 +30,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ContenedorVista()
-            ListaFactura(listaFacturas = facturasViewModel.listaFacturaResponse)
-            facturasViewModel.getListaFacturas()
+            Column() {
+                Toolbar()
+                ListaFactura(listaFacturas = facturasViewModel.listaFacturaResponse)
+                facturasViewModel.getListaFacturas()
+            }
+
+
         }
     }
 }
@@ -58,8 +64,8 @@ fun Toolbar() {
                     Button(
                         onClick = { /*....*/ },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(R.color.white)
-                        )
+                            backgroundColor = Color(0xFFFFFFFF),
+                            contentColor = Color(0xFF79BC2C))
                     ) {
                         Text(
                             text = stringResource(id = R.string.activityMain_toolbar_tvConsumo),
@@ -69,7 +75,10 @@ fun Toolbar() {
 
                     Text(
                         text = stringResource(id = R.string.activityMain_toolbar_tvFacturas),
-                        color = colorResource(id = R.color.black)
+                        color = colorResource(id = R.color.black),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
+
                     )
                 }
                 Image(painter = painterResource(id = R.drawable.icono_filtro), contentDescription = null, modifier = Modifier
