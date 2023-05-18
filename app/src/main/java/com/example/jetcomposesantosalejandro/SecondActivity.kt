@@ -6,24 +6,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jetcomposesantosalejandro.ui.theme.JetComposeSantosAlejandroTheme
 
 class SecondActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,10 +78,16 @@ class SecondActivity : ComponentActivity() {
     @Preview
     @Composable
     fun App() {
-        Column(){
-            CardViewFiltroFecha()
-            CardViewFiltroImporte()
-            CardViewFiltroEstado()
+        val scrollState = rememberScrollState()
+        Column() {
+            Column(modifier = Modifier
+                .verticalScroll(state = scrollState)
+                .height(420.dp)) {
+                CardViewFiltroFecha()
+                CardViewFiltroImporte()
+                CardViewFiltroEstado()
+            }
+            BotonesAplicarYBorrarFiltros()
         }
     }
 
@@ -110,7 +115,9 @@ class SecondActivity : ComponentActivity() {
                             text = stringResource(id = R.string.activitySecond_cardViewFiltroFecha_tvFechainicio),
                             style = TextStyle(fontSize = 15.sp)
                         )
-                        Button(onClick = { /*...*/ }) {
+                        Button(onClick = { /*...*/}, colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xFFD1CECE),
+                            contentColor = Color(0xFFFFFFFF))) {
                             Text(text = stringResource(id = R.string.activitySecond_cardviewFiltroFecha_textoBtnFechaInicio))
                         }
                     }
@@ -119,7 +126,9 @@ class SecondActivity : ComponentActivity() {
                             text = stringResource(id = R.string.activitySecond_cardViewFiltroFecha_tvFechaFin),
                             style = TextStyle(fontSize = 15.sp)
                         )
-                        Button(onClick = { /*...*/ }) {
+                        Button(onClick = { /*...*/ },colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xFFD1CECE),
+                            contentColor = Color(0xFFFFFFFF))) {
                             Text(text = stringResource(id = R.string.activitySecond_cardviewFiltroFecha_textoBtnFechaInicio))
                         }
                     }
@@ -175,7 +184,7 @@ class SecondActivity : ComponentActivity() {
                 .clip(RoundedCornerShape(4.dp))
         ) {
 
-            Column {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(id = R.string.activitySecond_cardviewFiltroEstado_cbestado),
                     style = TextStyle(fontSize = 15.sp)
@@ -194,20 +203,24 @@ class SecondActivity : ComponentActivity() {
     @Preview
     @Composable
     fun BotonesAplicarYBorrarFiltros() {
-        Column(){
+        Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally){
             Button(onClick = {},shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color(0xFF79BC2C),
-                contentColor = Color(0xFFFFFFFF)), modifier = Modifier.size(270.dp,125.dp).padding(20.dp)) {
+                contentColor = Color(0xFFFFFFFF)), modifier = Modifier
+                .size(360.dp, 75.dp)
+                .padding(10.dp)) {
                 Text(text = stringResource(id = R.string.activitySecond_btnAplicarFiltro),
-                    fontSize = 30.sp)
+                    fontSize = 20.sp)
 
             }
 
             Button(onClick = {},shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color(0xFFFFFFFF),
-                contentColor = Color(0xFF79BC2C)), modifier = Modifier.size(270.dp,125.dp).padding(20.dp)) {
+                contentColor = Color(0xFF79BC2C)), modifier = Modifier
+                .size(360.dp, 75.dp)
+                .padding(10.dp)) {
                 Text(text = stringResource(id = R.string.activitySecond_btnBorrarFiltro),
-                    fontSize = 30.sp)
+                    fontSize = 20.sp)
 
             }
         }
@@ -219,10 +232,20 @@ class SecondActivity : ComponentActivity() {
         val range = 0f..100f
         var selection by remember { mutableStateOf(50f) }
 
+        val colorVerde = Color(0xFF79BC2C)
+        val colorGris = Color(0xFFD1CECE)
+
         Slider(
             value = selection,
             valueRange = range,
-            onValueChange = { selection = it}
+            onValueChange = { selection = it},
+            colors = SliderDefaults.colors(
+                thumbColor = colorVerde,
+                activeTrackColor = colorVerde,
+                inactiveTickColor = colorGris,
+                activeTickColor = colorVerde,
+                inactiveTrackColor = colorGris
+            )
         )
     }
 
@@ -234,7 +257,7 @@ class SecondActivity : ComponentActivity() {
         label: String,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        colors: CheckboxColors = CheckboxDefaults.colors()
+        colors: CheckboxColors = CheckboxDefaults.colors(checkedColor = Color(0xFFD1CECE), checkmarkColor = Color(0xFF79BC2C), disabledColor =  Color(0xFF79BC2C))
     ) {
         Row(
             modifier = modifier.height(48.dp),
