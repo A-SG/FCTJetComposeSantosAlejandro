@@ -1,9 +1,11 @@
 package com.example.jetcomposesantosalejandro
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -11,10 +13,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,12 +27,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SecondActivity : ComponentActivity() {
+
+    private val facturasViewModel: FacturasViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ContenedorVista()
+
         }
     }
 
@@ -94,6 +105,8 @@ class SecondActivity : ComponentActivity() {
 
     @Composable
     fun CardViewFiltroFecha() {
+        var picker : DatePickerDialog
+        val calendarfechaDesde = Calendar.getInstance()
         Card(
             modifier = Modifier
                 .wrapContentSize()
@@ -115,22 +128,14 @@ class SecondActivity : ComponentActivity() {
                             text = stringResource(id = R.string.activitySecond_cardViewFiltroFecha_tvFechainicio),
                             style = TextStyle(fontSize = 15.sp)
                         )
-                        Button(onClick = { /*...*/}, colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xFFD1CECE),
-                            contentColor = Color(0xFFFFFFFF))) {
-                            Text(text = stringResource(id = R.string.activitySecond_cardviewFiltroFecha_textoBtnFechaInicio))
-                        }
+                        BotonDatePicker()
                     }
                     Column() {
                         Text(
                             text = stringResource(id = R.string.activitySecond_cardViewFiltroFecha_tvFechaFin),
                             style = TextStyle(fontSize = 15.sp)
                         )
-                        Button(onClick = { /*...*/ },colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xFFD1CECE),
-                            contentColor = Color(0xFFFFFFFF))) {
-                            Text(text = stringResource(id = R.string.activitySecond_cardviewFiltroFecha_textoBtnFechaInicio))
-                        }
+                        BotonDatePicker()
                     }
                 }
             }
@@ -140,6 +145,12 @@ class SecondActivity : ComponentActivity() {
 
     @Composable
     fun CardViewFiltroImporte() {
+        val range = 0f..100f
+        var selection by remember { mutableStateOf(50f) }
+        //var facturasViewModel:FacturasViewModel
+
+        val colorVerde = Color(0xFF79BC2C)
+        val colorGris = Color(0xFFD1CECE)
         Card(
             modifier = Modifier
                 .wrapContentSize()
@@ -162,7 +173,7 @@ class SecondActivity : ComponentActivity() {
                         style = TextStyle(fontSize = 15.sp)
                     )
                     Text(
-                        text = ("50€"),
+                        text = facturasViewModel.valorSlider.toInt().toString(),
                         style = TextStyle(fontSize = 15.sp)
                     )
                     Text(
@@ -230,15 +241,13 @@ class SecondActivity : ComponentActivity() {
     @Composable
     fun SimpleContinuousSlider() {
         val range = 0f..100f
-        var selection by remember { mutableStateOf(50f) }
-
         val colorVerde = Color(0xFF79BC2C)
         val colorGris = Color(0xFFD1CECE)
 
         Slider(
-            value = selection,
+            value = facturasViewModel.valorSlider,
             valueRange = range,
-            onValueChange = { selection = it},
+            onValueChange = { facturasViewModel.valorSlider = it},
             colors = SliderDefaults.colors(
                 thumbColor = colorVerde,
                 activeTrackColor = colorVerde,
@@ -283,5 +292,34 @@ class SecondActivity : ComponentActivity() {
     }
 
 
+    @Preview
+    @Composable
+    fun BotonDatePicker(){
+        //var fecha : String by rememberSaveable { mutableStateOf("")}
+        val anio:Int
+        val mes:Int
+        val dia:Int
+        facturasViewModel.valorFecha = getString(R.string.activitySecond_cardviewFiltroFecha_textoBtnFechaInicio)
+
+        val calendar:Calendar = Calendar.getInstance()
+        anio = calendar.get(Calendar.YEAR)
+        mes = calendar.get(Calendar.MONTH)
+        dia = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            LocalContext.current,
+            {
+                _,anio:Int,mes:Int,dia:Int-> facturasViewModel.valorFecha = "$dia/${mes+1}/$anio"
+            },anio,mes,dia
+        )
+
+        Button(onClick = {datePickerDialog.show()}, colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xFFD1CECE),
+                contentColor = Color(0xFFFFFFFF)
+            )
+        ) {
+            Text(text = facturasViewModel.valorFecha)
+        }
+    }
 }
 

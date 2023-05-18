@@ -17,7 +17,8 @@ class FacturasViewModel @Inject constructor(private val getFacturasUseCase: GetF
 
     //Variables
     var listaFacturaResponse: List<Factura> by mutableStateOf(listOf())
-    //var errorMessage :String by mutableStateOf("")
+    var valorSlider : Float by mutableStateOf(50F)
+    var valorFecha : String by mutableStateOf("")
 
     fun getListaFacturas(){
         viewModelScope.launch {
