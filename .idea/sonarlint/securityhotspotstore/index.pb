@@ -11,3 +11,9 @@ Iapp/src/main/java/com/example/jetcomposesantosalejandro/ui/theme/Theme.kt,5\3\
 Vapp/src/main/java/com/example/jetcomposesantosalejandro/data/model/FacturasProvider.kt,d\f\df88a8a268f33d951be0ddd67deeef86fee6c5df
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+?
+settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164

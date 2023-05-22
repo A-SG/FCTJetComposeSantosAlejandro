@@ -2,18 +2,20 @@ package com.example.jetcomposesantosalejandro
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,14 +29,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetcomposesantosalejandro.data.network.domain.model.Factura
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SecondActivity : ComponentActivity() {
 
+    private lateinit var jsonFiltroFacturasModel: String
+
     private val facturasViewModel: FacturasViewModel by viewModels()
+    private var json: Gson = Gson()
+    private lateinit var facturas: List<Factura>
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -78,6 +89,7 @@ class SecondActivity : ComponentActivity() {
                         contentDescription = null,
                         modifier = Modifier
                             .size(48.dp, 48.dp)
+                            .clickable { finish() }
                     )
                 }
 
@@ -105,8 +117,6 @@ class SecondActivity : ComponentActivity() {
 
     @Composable
     fun CardViewFiltroFecha() {
-        var picker : DatePickerDialog
-        val calendarfechaDesde = Calendar.getInstance()
         Card(
             modifier = Modifier
                 .wrapContentSize()
@@ -147,7 +157,6 @@ class SecondActivity : ComponentActivity() {
     fun CardViewFiltroImporte() {
         val range = 0f..100f
         var selection by remember { mutableStateOf(50f) }
-        //var facturasViewModel:FacturasViewModel
 
         val colorVerde = Color(0xFF79BC2C)
         val colorGris = Color(0xFFD1CECE)
@@ -214,14 +223,36 @@ class SecondActivity : ComponentActivity() {
     @Preview
     @Composable
     fun BotonesAplicarYBorrarFiltros() {
-        Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally){
-            Button(onClick = {},shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xFF79BC2C),
-                contentColor = Color(0xFFFFFFFF)), modifier = Modifier
-                .size(360.dp, 75.dp)
-                .padding(10.dp)) {
-                Text(text = stringResource(id = R.string.activitySecond_btnAplicarFiltro),
-                    fontSize = 20.sp)
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = {
+                    Log.d("click", "click")
+                    val resultIntent = Intent()
+                    val listaFacturas: String
+                    val json = Gson()
+                    listaFacturas = json.toJson(getParametrosEntradaActividad())
+                    Log.d("ListaFiltradaParaIntent", listaFacturas)
+                    resultIntent.putExtra("ListaFiltrada", listaFacturas)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                },
+                shape = RoundedCornerShape(50),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF79BC2C),
+                    contentColor = Color(0xFFFFFFFF)
+                ),
+                modifier = Modifier
+                    .size(360.dp, 75.dp)
+                    .padding(10.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.activitySecond_btnAplicarFiltro),
+                    fontSize = 20.sp
+                )
 
             }
 
@@ -266,8 +297,7 @@ class SecondActivity : ComponentActivity() {
         label: String,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        colors: CheckboxColors = CheckboxDefaults.colors(checkedColor = Color(0xFFD1CECE), checkmarkColor = Color(0xFF79BC2C), disabledColor =  Color(0xFF79BC2C))
-    ) {
+        colors: CheckboxColors = CheckboxDefaults.colors(checkedColor = Color(0xFFD1CECE), checkmarkColor = Color(0xFF79BC2C), disabledColor =  Color(0xFF79BC2C))) {
         Row(
             modifier = modifier.height(48.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -295,7 +325,6 @@ class SecondActivity : ComponentActivity() {
     @Preview
     @Composable
     fun BotonDatePicker(){
-        //var fecha : String by rememberSaveable { mutableStateOf("")}
         val anio:Int
         val mes:Int
         val dia:Int
@@ -320,6 +349,34 @@ class SecondActivity : ComponentActivity() {
         ) {
             Text(text = facturasViewModel.valorFecha)
         }
+    }
+
+
+    private fun getParametrosEntradaActividad(): List<Factura> {
+        //Variables
+        jsonFiltroFacturasModel = intent.getStringExtra("listaFacturasSinFiltrar").toString()
+        var listaFiltrada = emptyList<Factura>()
+
+        //Obtención de listado de facturas procedentes del main activity
+        if (jsonFiltroFacturasModel != null && jsonFiltroFacturasModel.isNotEmpty()) {
+            facturas = json.fromJson(jsonFiltroFacturasModel, object : TypeToken<List<Factura?>?>() {}.type)
+
+            listaFiltrada = facturas
+
+            //Filtrado de factura por su importe
+                if (listaFiltrada.isEmpty()) {
+                    listaFiltrada = facturas.filter { factura: Factura -> factura.importeOrdenacion <= facturasViewModel.valorSlider }
+                } else {
+                    if (facturasViewModel.valorSlider != 0.0.toFloat()) {
+                        listaFiltrada = listaFiltrada.filter { factura: Factura -> factura.importeOrdenacion <= facturasViewModel.valorSlider }
+                    }
+                }
+        }
+
+        facturasViewModel.listaFacturaResponse = listaFiltrada
+        Log.d("FacturasFiltradasImporte", facturasViewModel.listaFacturaResponse.toString())
+
+        return listaFiltrada
     }
 }
 

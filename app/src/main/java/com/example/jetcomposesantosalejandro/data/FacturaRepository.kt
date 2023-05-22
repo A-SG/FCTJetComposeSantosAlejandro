@@ -28,7 +28,7 @@ class FacturaRepository @Inject constructor(
     suspend fun getFacturasDatabase(): List<Factura> {
         return withContext(Dispatchers.IO) {
             val response: List<FacturaModel> = facturasDao.getFacturas()
-            Log.d("SinInternet", response.toString())
+            Log.d("BaseDeDatos", response.toString())
             response.map { it.toDomain() }
         }
     }

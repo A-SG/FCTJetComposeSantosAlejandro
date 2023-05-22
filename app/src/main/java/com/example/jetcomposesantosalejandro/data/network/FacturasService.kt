@@ -12,6 +12,7 @@ class FacturasService @Inject constructor(private val api : ApiService, private 
         return withContext(Dispatchers.IO){
             val response = try {
                 api.getFacturas()
+
             } catch (e : Exception){
                 mock.getFactura()
             }
